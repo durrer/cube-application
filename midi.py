@@ -14,16 +14,16 @@ import pyWinhook as pyHook
 # Initialize pygame
 pygame.init()
 
-display = pygame.display.set_mode((300, 300))
+display = pygame.display.set_mode((600, 600))
 pygame.display.set_caption("Mapping monitor")
 font = pygame.font.SysFont('Arial', 30)
 clock = pygame.time.Clock()
 
 
-duration = 100 #Duration of scene 1
+duration = 412 #Duration of scene 1
 
 global i
-i = 0
+i = input("Start number: ")
 
 counter, text = duration, "Let's gooo!"
 pygame.time.set_timer(pygame.USEREVENT, 1000)
@@ -99,6 +99,7 @@ while True:
                     note_off = [0x80, 90, 0] # channel 1, middle A, velocity 0
                     midiout.send_message(note_off)
                     text = str("Scene switch") 
+                    print ("Scene switch")
         
             if event == EventP:
                 counter = duration
@@ -108,10 +109,10 @@ while True:
             hm.KeyDown = OnKeyboardEvent
             hm.HookKeyboard()
 
-            display.fill((255, 255, 255))
-            text_played = font.render(str(i), True, (0,0,0))
+            display.fill((0, 0, 0))
+            text_played = font.render(str(i + " people have already seen"), True, (255,255,255))
             display.blit(text_played, (25, 25))
-            display.blit(font.render(text, True, (0, 0, 0)), (150, 25))
+            display.blit(font.render(text, True, (255, 255, 255)), (25, 125))
             pygame.display.flip()
             clock.tick(60)
         
