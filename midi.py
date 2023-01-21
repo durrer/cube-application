@@ -23,7 +23,7 @@ clock = pygame.time.Clock()
 duration = 412 #Duration of scene 1
 
 global i
-i = input("Start number: ")
+i = int(input("Initial number of starts : "))
 
 counter, text = duration, "Let's gooo!"
 pygame.time.set_timer(pygame.USEREVENT, 1000)
@@ -42,18 +42,18 @@ EventA=pygame.event.Event(pygame.USEREVENT, attr1='EventA')
 
 def OnKeyboardEvent(event):            
     if event.Ascii == 112:  # key pressed is 'p'
-        print ("Key P detected")
-        logging.log(10,chr(event.Ascii))
-        # Send a note on message to the MIDI output
-        note_on = [0x90, 60, 1] # channel 1, middle C, velocity 112
-        midiout.send_message(note_on)
-        time.sleep(200/1000)
-        # Send a note off message to the MIDI output
-        note_off = [0x80, 60, 0] # channel 1, middle C, velocity 0
-        midiout.send_message(note_off)
-        pygame.event.post(EventP)
-        return True
-                    
+        if counter < 390: 
+            print ("Key P detected")
+            logging.log(10,chr(event.Ascii))
+            # Send a note on message to the MIDI output
+            note_on = [0x90, 60, 1] # channel 1, middle C, velocity 112
+            midiout.send_message(note_on)
+            time.sleep(200/1000)
+            # Send a note off message to the MIDI output
+            note_off = [0x80, 60, 0] # channel 1, middle C, velocity 0
+            midiout.send_message(note_off)
+            pygame.event.post(EventP)
+            return True          
     if event.Ascii == 97: #key pressed is 'a'
         print ("Key A detected")                                     
         # Send a note on message to the MIDI output
@@ -110,7 +110,9 @@ while True:
             hm.HookKeyboard()
 
             display.fill((0, 0, 0))
-            text_played = font.render(str(i + " people have already seen"), True, (255,255,255))
+            text_played_string = "{} people have already seen".format(i) 
+            
+            text_played = font.render(str(text_played_string), True, (255,255,255))
             display.blit(text_played, (25, 25))
             display.blit(font.render(text, True, (255, 255, 255)), (25, 125))
             pygame.display.flip()
