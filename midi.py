@@ -2,6 +2,7 @@ import pygame
 import rtmidi
 import sys
 import time
+import json
 
 import ctypes
 from ctypes import wintypes
@@ -10,8 +11,9 @@ from ctypes import wintypes
 import pythoncom, sys, logging
 import pyWinhook as pyHook
 
+import datetime
 
-# Initialize pygame
+ # Initialize pygame
 pygame.init()
 
 display = pygame.display.set_mode((600, 600))
@@ -53,6 +55,22 @@ def OnKeyboardEvent(event):
             note_off = [0x80, 60, 0] # channel 1, middle C, velocity 0
             midiout.send_message(note_off)
             pygame.event.post(EventP)
+            # Data to be written
+            x = datetime.datetime.now()
+            dictionary = {
+                "id": i,
+                "year": x.year,
+                "month": x.month,
+                "day": x.day,
+                "time":x.strftime("%H:%M:%S")
+            }
+ 
+            # Serializing json
+            json_object = json.dumps(dictionary, indent=5)
+ 
+            # Writing to sample.json
+            with open("data.txt", "a") as outfile:
+                outfile.write(json_object)
             return True          
     if event.Ascii == 97: #key pressed is 'a'
         print ("Key A detected")                                     
