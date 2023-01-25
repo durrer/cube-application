@@ -21,11 +21,11 @@ pygame.display.set_caption("Mapping monitor")
 font = pygame.font.SysFont('Arial', 30)
 clock = pygame.time.Clock()
 
-
-duration = 412 #Duration of scene 1
-
 global i
 i = int(input("Initial number of starts : "))
+
+global duration
+duration = 412 #Duration of scene 1
 
 counter, text = duration, "Let's gooo!"
 pygame.time.set_timer(pygame.USEREVENT, 1000)
@@ -107,7 +107,16 @@ while True:
             if event.type == pygame.USEREVENT: 
                 counter -= 1
                 if counter != 0:
-                    text = str(counter).rjust(3) 
+                    counter_text = abs(counter)
+                    if counter < 0:
+                        text_before = "Od poslední návštevy uběhlo: "
+                    else:
+                        text_before = ""
+                    text_H =  counter_text // 3600
+                    text_M = (counter_text % 3600) // 60
+                    text_S = (counter_text % 3600) % 60
+                    text = text_before + str(text_H)+ " H " + str(text_M)+ " M " + str(text_S)+ " S"
+                    #text = str(counter).rjust(3) 
                 if counter == 0:
                     # Send a note on message to the MIDI output
                     note_on = [0x90, 90, 1] # channel 1, middle A, velocity 112
